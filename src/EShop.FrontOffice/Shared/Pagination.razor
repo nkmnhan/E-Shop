@@ -1,0 +1,134 @@
+<div class="row">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination eshop-pagination">
+            <li class="page-item">
+                <button class="page-link"
+                        @onclick=@(async()=> await OnSelectDirection(PaginationDirection.Back))
+                        disabled="@(currentPage==1)">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Back</span>
+                </button>
+            </li>
+            <li class="page-item">
+                <button class="page-link"
+                        @onclick=@(async()=> await OnSelectDirection(PaginationDirection.Previous))
+                        disabled="@(currentPage==1)">
+                    Previous
+                </button>
+            </li>
+
+            @for (int i = pagerStart; i <= pagerEnd; i++)
+            {
+                var currentPage = i;
+                <li class="page-item @(this.currentPage == currentPage? "active": "")">
+                    <button class="page-link"
+                            @onclick="@(async()=> await NavigateToPage(currentPage))">
+                        @currentPage<span class="sr-only">(current)</span>
+                    </button>
+                </li>
+            }
+
+            <li class="page-item">
+                <button class="page-link @(currentPage == totalPages?"disabled":"")"
+                        @onclick=@( async()=> await OnSelectDirection(PaginationDirection.Next))
+                        disabled="@(currentPage==totalPages)">
+                    Next
+                </button>
+            </li>
+            <li class="page-item">
+                <button class="page-link"
+                        @onclick=@(async()=> await OnSelectDirection(PaginationDirection.Forward))
+                        disabled="@(currentPage==totalPages)">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Forward</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <span class="pagebutton btn btn-link disabled">Page @pagingVm.CurrentPage of @pagingVm.TotalPages</span>
+</div>
+@code {
+    int totalPages;
+    int currentPage;
+    int pagerSize;
+    int pagerStart;
+    int pagerEnd;
+
+    [Parameter]
+    public PagingVm pagingVm { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnClickCallback { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        currentPage = pagingVm.CurrentPage;
+        totalPages = pagingVm.TotalPages;
+        pagerSize = 5;
+        RenderPager();
+    }
+
+    public async Task NavigateToPage(int newPage)
+    {
+        if (newPage != currentPage)
+        {
+            currentPage = newPage;
+            await OnClickCallback.InvokeAsync(currentPage);
+            this.StateHasChanged();
+        }
+    }
+
+    public void RenderPager()
+    {
+        if (currentPage == totalPages)
+        {
+            pagerStart = DecreaseCurrent(totalPages, pagerSize - 1);
+            pagerEnd = totalPages;
+        }
+        else
+        if (currentPage == 1)
+        {
+            pagerStart = 1;
+            pagerEnd = IncreaseCurrent(pagerStart, pagerSize - 1);
+        }
+        else
+        {
+            pagerStart = DecreaseCurrent(currentPage, pagerSize / 2);
+            pagerEnd = IncreaseCurrent(pagerStart, pagerSize - 1);
+        }
+    }
+
+    public async Task OnSelectDirection(PaginationDirection direction)
+    {
+        var newPage = 1;
+        switch (direction)
+        {
+            case PaginationDirection.Back:
+                newPage = DecreaseCurrent(pagerStart, pagerSize);
+                break;
+            case PaginationDirection.Previous:
+                newPage = DecreaseCurrent(currentPage, 1);
+                break;
+            case PaginationDirection.Next:
+                newPage = IncreaseCurrent(currentPage, 1);
+                break;
+            case PaginationDirection.Forward:
+                newPage = IncreaseCurrent(pagerEnd, pagerSize);
+                break;
+        }
+        await NavigateToPage(newPage);
+    }
+
+    private int IncreaseCurrent(int current, int range)
+    {
+        var newPage = current + range;
+        return newPage > totalPages ? totalPages : newPage;
+    }
+
+    private int DecreaseCurrent(int current, int range)
+    {
+        var newPage = current - range;
+        return newPage < 1 ? 1 : newPage;
+    }
+} 

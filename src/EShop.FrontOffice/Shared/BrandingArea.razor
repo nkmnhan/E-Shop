@@ -1,0 +1,120 @@
+@inject ICategoryService categorySerice
+@inject NavigationManager NavigationManager
+@inject ICartService CartService
+@inject INotifierCartService Notifier
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="logo">
+                <h1><a href="#" @onclick=@(()=> NavigateToComponent(0))>e-<span>Shop</span></a></h1>
+            </div>
+        </div>
+
+        <div class="col-sm-8 search-bar">
+            <div class="input-group search-tool">
+                <input type="text" @bind="searchContent" class="form-control" aria-label="Find products">
+                <div class="input-group-append">
+                    <select @bind="selectedSearchOption">
+                        <option selected value="0">All</option>
+                        @if (categories != null && categories.Any())
+                        {
+                            @foreach (var category in categories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="input-group-append">
+                    <button class="btn" type="button" @onclick="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <a href="cart" class="shopping-item">
+                <div class="display-info">
+                    <i class="fa fa-shopping-cart"></i> - <span class="cart-amunt">$@CartService.ComputeTotalValue().ToString("00.00")</span>
+                    <span class="product-count">@CartService.TotalItem()</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top category-menu" data-toggle="affix">
+    <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse text-center category-navbar" id="navbarsExample11">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link @(SelectedNavItem == 0 ? "active" : "")" href="#" @onclick=@(()=> NavigateToComponent(0))>All</a>
+                </li>
+                @if (categories != null && categories.Any())
+                {
+                    @foreach (var category in categories)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link  @(SelectedNavItem == category.Id ? "active" : "")" href="#" @onclick=@(()=> NavigateToComponent(category.Id))>@category.Name</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+@code {
+
+    private string searchContent;
+    private int selectedSearchOption = 0;
+    private IEnumerable<CategoryVm> categories;
+
+    [Parameter]
+    public int SelectedNavItem { get; set; } = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await categorySerice.GetCategories();
+        Notifier.Notify += OnNotify;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await CartService.Reload();
+            StateHasChanged();
+        }
+    }
+
+    private void NavigateToComponent(int selectedCategoryId)
+    {
+        SelectedNavItem = selectedCategoryId;
+        NavigationManager.NavigateTo(PageUrls.ProductsPage(selectedCategoryId, 1, string.Empty));
+        this.StateHasChanged();
+    }
+
+    private void Search(MouseEventArgs e)
+    {
+        SelectedNavItem = selectedSearchOption;
+        NavigationManager.NavigateTo(PageUrls.ProductsPage(selectedSearchOption, 1, searchContent));
+        this.StateHasChanged();
+    }
+
+    public async Task OnNotify()
+    {
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        Notifier.Notify -= OnNotify;
+    }
+}

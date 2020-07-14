@@ -1,0 +1,85 @@
+﻿@page "/product/{ProductId}"
+@inject IProductSerice productService
+@inject INotifierCartService Notifier
+
+@if (product == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mt-50">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="products/@category.Id/1">@category.Name</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@product.Name</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-lg-7">
+            <img class="d-block w-100" src="@product.ImageUrl" alt="Second slide">
+        </div>
+        <div class="col-12 col-lg-5">
+            <div class="single_product_desc">
+                <div class="product-meta-data">
+                    <div class="line"></div>
+                    <p class="product-price">$@product.Price</p>
+                    <a href="product-details.html">
+                        <h6>@product.Name</h6>
+                    </a>
+                    <div class="ratings-review mb-15 d-flex align-items-center justify-content-between">
+                        <div class="ratings">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <p class="avaibility"><i class="fa fa-circle"></i> In Stock</p>
+                </div>
+
+                <div class="short_overview my-5">
+                    <p>@product.Description</p>
+                </div>
+
+                <div class="cart clearfix">
+                    <div class="cart-btn d-flex mb-50 mb-2">
+                        <p>Qty</p>
+                        <div class="quantity">
+                            <input type="number" class="qty-text" step="1" min="1" max="300" name="quantity" @bind-value="quantity">
+                        </div>
+                    </div>
+                    <button @onclick="AddValue" name="addtocart" value="5" class="btn amado-btn">Add to cart</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public string ProductId { get; set; }
+    private int quantity { get; set; } = 1;
+    private CategoryVm category { get; set; }
+    private ProductVm product;
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await productService.GetProductById(int.Parse(ProductId));
+        category = product.Categories.FirstOrDefault();
+    }
+
+    public async Task AddValue()
+    {
+        await Notifier.AddCartLine(product, quantity);
+
+    }
+}

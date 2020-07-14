@@ -1,0 +1,69 @@
+﻿@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IConfiguration Configuration
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark top-bar">
+    <div class=" container">
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <ul class="navbar-nav">
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="sr-only" aria-hidden="true"></span>@Username!
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="authentication/Logout" Match="NavLinkMatch.Prefix">
+                                <span class="sr-only" aria-hidden="true"></span> Logout
+                            </a>
+                        </li>
+                    </Authorized>
+                    <NotAuthorized>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@PageUrls.LoginPage(NavigationManager.Uri)" Match="NavLinkMatch.Prefix">
+                                <span class="sr-only" aria-hidden="true"></span> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" @onclick="RegisterRedirect" Match="NavLinkMatch.Prefix">
+                                <span class="sr-only" aria-hidden="true"></span> Register
+                            </a>
+                        </li>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+@code {
+    private string Username = "Anonymous User";
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            Username = user.Claims
+            .Where(c => c.Type.Equals("name"))
+            .Select(c => c.Value)
+            .FirstOrDefault() ?? string.Empty;
+        }
+
+        await base.SetParametersAsync(parameters);
+    }
+
+    public void RegisterRedirect()
+    {
+        var backEndUrl = Configuration["BackEndUrl"];
+        NavigationManager.NavigateTo(PageUrls.RegisterPage(backEndUrl, NavigationManager.Uri));
+    }
+}
+

@@ -1,0 +1,34 @@
+﻿@page
+@model EShop.BackEnd.Pages.Account.LoggedOutModel
+
+@{
+    ViewData["signed-out"] = true;
+}
+
+<div class="page-header logged-out">
+    <h1>
+        Logout
+        <small>You are now logged out</small>
+    </h1>
+
+    @if (Model.Input.PostLogoutRedirectUri != null)
+    {
+        <div>
+            Click <a class="PostLogoutRedirectUri" href="@Model.Input.PostLogoutRedirectUri">here</a> to return to the
+            <span>@Model.Input.ClientName</span> application.
+        </div>
+    }
+
+    @if (Model.Input.SignOutIframeUrl != null)
+    {
+        <iframe width="0" height="0" class="signout" hidden src="@Model.Input.SignOutIframeUrl"></iframe>
+    }
+</div>
+
+@section scripts
+{
+    @if (Model.Input.AutomaticRedirectAfterSignOut)
+    {
+        <script src="~/js/signout-redirect.js"></script>
+    }
+}

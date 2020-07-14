@@ -1,0 +1,25 @@
+﻿@inherits LayoutComponentBase
+@using System.Text.RegularExpressions
+@inject NavigationManager NavigationManager
+<TopBar />
+<BrandingArea SelectedNavItem="selectedCatategoyId" />
+
+<div class="container main-containter">
+    @Body
+    @*<div class="spinner-border spinner-center" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>*@
+</div>
+
+<Footer />
+
+@code {
+
+    private int selectedCatategoyId;
+    protected override void OnParametersSet()
+    {
+        var rgx = new Regex(Constants.ProductRgx);
+        selectedCatategoyId = int.TryParse(rgx.Match(NavigationManager.Uri).Groups[Constants.ProductRgxSubString].Value, out selectedCatategoyId) ? selectedCatategoyId : 0;
+        base.OnParametersSet();
+    }
+}

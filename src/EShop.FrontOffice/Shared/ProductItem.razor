@@ -1,0 +1,16 @@
+﻿
+<div class="col-xs-6 col-md-3">
+    <div class="card mb-4 product-item">
+        <a href="product/@Product.Id">
+            <img class="card-img-top" src="@Product.ImageUrl" alt="@Product.Name">
+            <div class="card-body">
+                <h5 class="card-title title" data-toggle="tooltip" title="@Product.Name">@Product.Name</h5>
+                <p class="card-text product-card">$@Product.Price</p>
+            </div>
+        </a>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public ProductVm Product { get; set; }
+}

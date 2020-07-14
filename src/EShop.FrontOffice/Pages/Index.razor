@@ -1,0 +1,69 @@
+﻿@page "/"
+@page "/products/{categoryId:int}/{pageIndex:int}"
+@page "/products/{categoryId:int}/{pageIndex:int}/{SearchContent}"
+@inject IProductSerice productService
+@inject NavigationManager NavigationManager
+
+<div class="row">
+    @if (Loading == true)
+    {
+        <div class="spinner-border spinner-center" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    }
+    else
+    {
+        foreach (var product in productsListVm.Products)
+        {
+            <ProductItem Product="product" />
+        }
+    }
+
+</div>
+@if (productsListVm != null)
+{
+    <Pagination pagingVm="@productsListVm.PagingInfo" OnClickCallback="GetNewProducts" />
+}
+
+@code{
+
+    private bool Loading { get; set; }
+    [Parameter]
+    public int CategoryId { get; set; }
+
+    [Parameter]
+    public int PageIndex { get; set; }
+
+    [Parameter]
+    public string SearchContent { get; set; }
+
+    private ProductsListVm productsListVm;
+    protected override async Task OnInitializedAsync()
+    {
+        await GetContent();
+    }
+
+    private async Task GetNewProducts(int pageIndex)
+    {
+        await GetContent();
+        NavigationManager.NavigateTo($"/products/{CategoryId}/{pageIndex}/{SearchContent}");
+    }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        await GetContent();
+    }
+
+    private async Task GetContent()
+    {
+        Loading = true;
+
+        CategoryId = CategoryId < 0 ? 0 : CategoryId;
+        PageIndex = PageIndex < 1 ? 1 : PageIndex;
+        SearchContent = string.IsNullOrEmpty(SearchContent) ? string.Empty : SearchContent;
+        productsListVm = await productService.GetProducts(CategoryId, PageIndex, SearchContent);
+
+        Loading = false;
+        this.StateHasChanged();
+    }
+}
