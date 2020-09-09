@@ -12,3 +12,5 @@ TestResults/
 src/back-office/.vscode/
 
 src/back-office/yarn.lock
+
+**/yarn.lock
