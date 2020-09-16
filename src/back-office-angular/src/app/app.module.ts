@@ -9,13 +9,13 @@ import { FormsModule } from '@angular/forms';
 import { HeroDetailComponent } from './_components/hero-detail/hero-detail.component';
 import { MessagesComponent } from './_components/messages/messages.component';
 import { DashboardComponent } from './_components/dashboard/dashboard.component';
-import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './_services/in-memory-data.service';
 import { HeroSearchComponent } from './_components/hero-search/hero-search.component';
-import { MatIconModule } from '@angular/material/icon';
+import { NavBarComponent } from './_components/nav-bar/nav-bar.component';
+import { MaterialModule} from './_modules'
 
 @NgModule({
   declarations: [
@@ -25,18 +25,18 @@ import { MatIconModule } from '@angular/material/icon';
     MessagesComponent,
     DashboardComponent,
     HeroSearchComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
-    MatToolbarModule,
-    MatIconModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
       dataEncapsulation: false,
     }),
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent],
