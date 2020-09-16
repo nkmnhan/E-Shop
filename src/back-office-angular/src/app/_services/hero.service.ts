@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Hero } from './hero';
-import { HEROES } from './mock-heroes';
+import { Hero } from '../_models/hero';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';

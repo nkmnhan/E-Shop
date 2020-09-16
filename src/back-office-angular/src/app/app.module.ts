@@ -2,18 +2,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { AppComponent } from './_components/app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HeroesComponent } from './heroes/heroes.component';
+import { HeroesComponent } from './_components/heroes/heroes.component';
 import { FormsModule } from '@angular/forms';
-import { HeroDetailComponent } from './hero-detail/hero-detail.component';
-import { MessagesComponent } from './messages/messages.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { HeroDetailComponent } from './_components/hero-detail/hero-detail.component';
+import { MessagesComponent } from './_components/messages/messages.component';
+import { DashboardComponent } from './_components/dashboard/dashboard.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './in-memory-data.service';
-import { HeroSearchComponent } from './hero-search/hero-search.component';
+import { InMemoryDataService } from './_services/in-memory-data.service';
+import { HeroSearchComponent } from './_components/hero-search/hero-search.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -22,19 +24,21 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
     HeroDetailComponent,
     MessagesComponent,
     DashboardComponent,
-    HeroSearchComponent
+    HeroSearchComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    MatToolbarModule,
+    MatIconModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
-    )
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
+      dataEncapsulation: false,
+    }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
