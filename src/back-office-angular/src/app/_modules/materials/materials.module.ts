@@ -14,4 +14,4 @@ const MaterialComponents = [MatToolbarModule,
   ],
   exports:[MaterialComponents]
 })
-export class MaterialModule { }
+export class MaterialsModule { }

@@ -1,0 +1,24 @@
+import { NgModule } from '@angular/core';
+import { HeroDetailComponent } from '../../_components/hero-detail/hero-detail.component';
+import { MessagesComponent } from '../../_components/messages/messages.component';
+import { DashboardComponent } from '../../_components/dashboard/dashboard.component';
+
+import { HeroesComponent } from '../../_components/heroes/heroes.component';
+import { HeroSearchComponent } from '../../_components/hero-search/hero-search.component';
+import { NavBarComponent } from '../../_components/nav-bar/nav-bar.component';
+import { AuthCallbackComponent } from '../../_components/auth-callback/auth-callback.component';
+import { AuthSilentComponent } from '../../_components/auth-silent/auth-silent.component';
+
+@NgModule({
+  declarations: [
+    HeroesComponent,
+    HeroDetailComponent,
+    MessagesComponent,
+    DashboardComponent,
+    HeroSearchComponent,
+    NavBarComponent,
+    AuthCallbackComponent,
+    AuthSilentComponent,
+  ]
+})
+export class ComponentsModule {}
