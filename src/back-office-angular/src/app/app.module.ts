@@ -1,3 +1,4 @@
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -15,7 +16,9 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './_services/in-memory-data.service';
 import { HeroSearchComponent } from './_components/hero-search/hero-search.component';
 import { NavBarComponent } from './_components/nav-bar/nav-bar.component';
-import { MaterialModule} from './_modules'
+import { MaterialModule } from './_modules';
+import { AuthCallbackComponent } from './_components/auth-callback/auth-callback.component';
+import { AuthSilentComponent } from './_components/auth-silent/auth-silent.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import { MaterialModule} from './_modules'
     MessagesComponent,
     DashboardComponent,
     HeroSearchComponent,
-    NavBarComponent
+    NavBarComponent,
+    AuthCallbackComponent,
+    AuthSilentComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,9 +41,8 @@ import { MaterialModule} from './_modules'
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
       dataEncapsulation: false,
     }),
-    MaterialModule
+    MaterialModule,
   ],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

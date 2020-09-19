@@ -98,12 +98,19 @@ namespace EShop.BackEnd.Data.SeedData
                     RequireConsent = false,
                     RequirePkce = true,
 
-                    AllowedCorsOrigins = { "http://localhost:3000",
-                    "https://localhost:9090"},
+                    AllowedCorsOrigins = { 
+                        "http://localhost:3000",
+                        "https://localhost:9090",
+                        "http://localhost:4200",
+                    },
                 
                     // where to redirect to after login
-                    RedirectUris = { "http://localhost:3000/callback",
-                    "https://localhost:9090/callback"},
+                    RedirectUris = { 
+                        "http://localhost:3000/callback",
+                        "https://localhost:9090/callback",
+                        "http://localhost:4200/callback",
+                        "http://localhost:4200/silent"
+                    },
 
                     //// where to redirect to after logout
                     //PostLogoutRedirectUris = { "http://localhost:3000/swagger/oauth2-redirect.html",
