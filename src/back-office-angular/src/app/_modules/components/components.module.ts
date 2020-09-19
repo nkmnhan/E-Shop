@@ -1,3 +1,4 @@
+import { from } from 'rxjs';
 import { NgModule } from '@angular/core';
 import { HeroDetailComponent } from '../../_components/hero-detail/hero-detail.component';
 import { MessagesComponent } from '../../_components/messages/messages.component';
@@ -9,6 +10,9 @@ import { NavBarComponent } from '../../_components/nav-bar/nav-bar.component';
 import { AuthCallbackComponent } from '../../_components/auth-callback/auth-callback.component';
 import { AuthSilentComponent } from '../../_components/auth-silent/auth-silent.component';
 
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+
 @NgModule({
   declarations: [
     HeroesComponent,
@@ -19,6 +23,9 @@ import { AuthSilentComponent } from '../../_components/auth-silent/auth-silent.c
     NavBarComponent,
     AuthCallbackComponent,
     AuthSilentComponent,
-  ]
+  ],
+  imports: [MatToolbarModule, MatIconModule],
+  exports: [NavBarComponent],
+  entryComponents: [NavBarComponent],
 })
 export class ComponentsModule {}
