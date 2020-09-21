@@ -1,3 +1,4 @@
+import { HttpClientInterceptor } from './_services/interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
 
@@ -23,6 +24,7 @@ import { ComponentsModule } from './_modules/';
     }),
     ComponentsModule,
   ],
+  providers: [HttpClientInterceptor],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
