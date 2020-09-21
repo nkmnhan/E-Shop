@@ -9,6 +9,7 @@ import { HeroSearchComponent } from '../../_components/hero-search/hero-search.c
 import { NavBarComponent } from '../../_components/nav-bar/nav-bar.component';
 import { AuthCallbackComponent } from '../../_components/auth-callback/auth-callback.component';
 import { AuthSilentComponent } from '../../_components/auth-silent/auth-silent.component';
+import { VideoComponent } from '../../_components/video/video.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,9 +24,10 @@ import { MatIconModule } from '@angular/material/icon';
     NavBarComponent,
     AuthCallbackComponent,
     AuthSilentComponent,
+    VideoComponent,
   ],
   imports: [MatToolbarModule, MatIconModule],
-  exports: [NavBarComponent],
-  entryComponents: [NavBarComponent],
+  exports: [NavBarComponent, VideoComponent],
+  entryComponents: [NavBarComponent, VideoComponent],
 })
 export class ComponentsModule {}

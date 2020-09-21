@@ -307,6 +307,24 @@
 </style>
 
 <app-nav-bar></app-nav-bar>
+
+<app-video
+  [options]="{
+    autoplay: true,
+    controls: true,
+    sources: [{ src: 'https://vjs.zencdn.net/v/oceans.mp4', type: 'video/mp4' }, {src: 'https://vjs.zencdn.net/v/oceans.webm', type: 'video/web'}]
+  }"
+  [image]="'http://personal.psu.edu/xqz5228/jpg.jpg'"
+></app-video>
+
+<app-video
+  [options]="{
+    autoplay: true,
+    controls: true,
+    sources: [{ src: 'https://vjs.zencdn.net/v/oceans.mp4', type: 'video/mp4' }, {src: 'https://vjs.zencdn.net/v/oceans.webm', type: 'video/web'}]
+  }"
+  [image]="'https://wiki.k-space.ee/images/2/27/minion.jpg'"
+></app-video>
 <!-- Toolbar -->
 <!-- <div class="toolbar" role="banner">
   <img
