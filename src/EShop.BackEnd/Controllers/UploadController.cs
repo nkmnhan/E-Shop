@@ -43,7 +43,7 @@ namespace EShop.BackEnd.Controllers
             }
         }
 
-        [HttpPost("multi-file"), DisableRequestSizeLimit]
+        [HttpPost("multi-files"), DisableRequestSizeLimit]
         public IActionResult MultiUpload()
         {
             try
@@ -69,7 +69,7 @@ namespace EShop.BackEnd.Controllers
                     }
                 }
 
-                return Ok("All the files are successfully uploaded.");
+                return Ok();
             }
             catch (Exception ex)
             {
